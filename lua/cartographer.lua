@@ -31,7 +31,7 @@ end
 --- @field _modes table the modes to apply a keymap to.
 local Cartographer = {}
 
-function Cartographer:delegate(fn)
+function Cartographer:Delegate(fn)
   self.delegate = fn; return self
 end
 --- Set `key` to `true` if it was not already present
