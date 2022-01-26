@@ -70,7 +70,7 @@ function Cartographer:__newindex(lhs, rhs)
 			unique = rawget(self, 'unique'),
 		}
 
-    local delegate = self.delegate or vim.api.nvim_set_keymap
+    local  delegate = self.delegate() or vim.api.nvim_set_keymap()
 
 		if type(rhs) == 'function' then
 			if Callbacks then -- TODO: remove when `0.7` is stabilized
