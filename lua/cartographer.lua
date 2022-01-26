@@ -31,6 +31,9 @@ end
 --- @field _modes table the modes to apply a keymap to.
 local Cartographer = {}
 
+function Cartographer:delegate(fn)
+  self.delegate = fn; return self
+end
 --- Set `key` to `true` if it was not already present
 --- @param key string the setting to set to `true`
 --- @returns table self so that this function can be called again
@@ -67,6 +70,8 @@ function Cartographer:__newindex(lhs, rhs)
 			unique = rawget(self, 'unique'),
 		}
 
+    local delegate = self.delegate or vim.api.nvim_set_keymap
+
 		if type(rhs) == 'function' then
 			if Callbacks then -- TODO: remove when `0.7` is stabilized
 				local id = Callbacks.new(rhs)
@@ -86,8 +91,8 @@ function Cartographer:__newindex(lhs, rhs)
 			end
 		else
 			for _, mode in ipairs(modes) do
-				vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
-			end
+        delegate(buffer, mode, lhs, rhs, opts)
+      end
 		end
 	else
 		if buffer then
